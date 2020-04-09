@@ -9,7 +9,7 @@ import ai.api.android.AIDataService;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 
-public class RequestTask  extends AsyncTask<AIRequest, Void, AIResponse> {
+public class RequestTask  extends AsyncTask<AIRequest, Void, AIResponse> { //sends user query to the bot
 
     Activity activity;
     private AIDataService aiDataService;
@@ -22,7 +22,7 @@ public class RequestTask  extends AsyncTask<AIRequest, Void, AIResponse> {
     }
 
     @Override
-    protected AIResponse doInBackground(AIRequest... aiRequests) {
+    protected AIResponse doInBackground(AIRequest... aiRequests) { 
         final AIRequest request = aiRequests[0];
         try {
             return aiDataService.request(request, customAIServiceContext);
@@ -33,7 +33,7 @@ public class RequestTask  extends AsyncTask<AIRequest, Void, AIResponse> {
     }
 
     @Override
-    protected void onPostExecute(AIResponse aiResponse) {
+    protected void onPostExecute(AIResponse aiResponse) { //on getting response send it to the nirvana activity
         ((nirvana)activity).callback(aiResponse);
     }
 }
