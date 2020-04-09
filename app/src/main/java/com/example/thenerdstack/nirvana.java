@@ -45,8 +45,7 @@ public class nirvana extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nirvana);
-        final ScrollView scrollview = findViewById(R.id.chatScrollView);
-//        scrollview.post(() -> scrollview.fullScroll(ScrollView.FOCUS_DOWN));
+        final ScrollView scrollview = findViewById(R.id.chatScrollView); //added scroll view for the bot
         scrollview.post(new Runnable() {
             public void run() {
                 scrollview.fullScroll(View.FOCUS_DOWN);
@@ -62,13 +61,9 @@ public class nirvana extends AppCompatActivity {
                 sendMessage(msg);
             }
         });
-        //sendBtn.setOnClickListener(this::sendMessage);
 
 
-//        ref = FirebaseDatabase.getInstance().getReference();
-//        ref.keepSynced(true);
-
-        initChatBot();
+        initChatBot(); //initialization
 
     }
     private void initChatBot()
@@ -81,8 +76,8 @@ public class nirvana extends AppCompatActivity {
         customAIServiceContext= AIServiceContextBuilder.buildFromSessionId(uuid);
         aiRequest=new AIRequest();
     }
-    private void sendMessage(String msg) {
-//        String msg = queryEditText.getText().toString();
+    private void sendMessage(String msg) { //function to send the messge from the bot
+
         if (msg.trim().isEmpty()) {
             Toast.makeText(nirvana.this, "Please enter your query!", Toast.LENGTH_LONG).show();
         } else {
@@ -92,15 +87,11 @@ public class nirvana extends AppCompatActivity {
             aiRequest.setQuery(msg);
             RequestTask requestTask = new RequestTask(nirvana.this, aiDataService, customAIServiceContext);
             requestTask.execute(aiRequest);
-
-            // Java V2
-//            QueryInput queryInput = QueryInput.newBuilder().setText(TextInput.newBuilder().setText(msg).setLanguageCode("en-US")).build();
-//            new RequestJavaV2Task(MainActivity.this, session, sessionsClient, queryInput).execute();
         }
     }
 
 
-    private void showTextView(String message, int type) {
+    private void showTextView(String message, int type) { //function to show the response
         FrameLayout layout;
         switch (type) {
             case USER:
@@ -120,21 +111,19 @@ public class nirvana extends AppCompatActivity {
         layout.requestFocus();
         queryEditText.requestFocus(); // change focus back to edit text to continue typing
     }
-    FrameLayout getUserLayout() {
-//        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-//        return (FrameLayout) inflater.inflate(R.layout.bot_msg_layout, null);
+    FrameLayout getUserLayout() { //to get the user layout
         LayoutInflater inflater = LayoutInflater.from(nirvana.this);
         return (FrameLayout) inflater.inflate(R.layout.user_msg_layout, null);
     }
 
-    FrameLayout getBotLayout() {
+    FrameLayout getBotLayout() { //to get the bot layout
         LayoutInflater inflater = LayoutInflater.from(nirvana.this);
         return (FrameLayout) inflater.inflate(R.layout.bot_msg_layout, null);
     }
-    public void callback(AIResponse aiResponse)
+    public void callback(AIResponse aiResponse) //to process the bot msg
     {
         if (aiResponse != null) {
-            // process aiResponse here
+            
             String botReply = aiResponse.getResult().getFulfillment().getSpeech();
             //Log.d(TAG, "Bot Reply: " + botReply);
             showTextView(botReply, BOT);
